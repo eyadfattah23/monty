@@ -12,7 +12,7 @@ void push(stack_t **stack, unsigned int line_number)
 
 	if (!arg || !is_number(arg))
 	{
-		printf("L%d: usage: push integer\n", line_number);
+		fprintf(stderr, "L%u: usage: push integer\n", line_number);
 		exit(EXIT_FAILURE);
 	}
 	n = atoi(arg);
@@ -20,7 +20,7 @@ void push(stack_t **stack, unsigned int line_number)
 
 	if (!new_node)
 	{
-		printf("Error: malloc failed\n");
+		fprintf(stderr, "Error: malloc failed\n");
 		exit(EXIT_FAILURE);
 	}
 	new_node->n = n;
