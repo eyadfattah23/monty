@@ -48,7 +48,7 @@ void add(stack_t **stack, unsigned int line_number);
 void nop(stack_t **stack, unsigned int line_number);
 instruction_t *get_instruction(char *opcode);
 void free_stack(stack_t *stack);
-int parse_file(int *file, stack_t **stack);
+int parse_file(int file, stack_t **stack);
 int *open_file(char *filename);
 
 #endif
