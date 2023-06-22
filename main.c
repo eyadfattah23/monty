@@ -50,7 +50,7 @@ FILE *open_file(char *filename)
 /**
  * parse_file - Parses a file line by line and executes the relevant operation.
  * @file: The file to parse.
- *
+ * @stack: The stack
  * Return: EXIT_SUCCESS on success, EXIT_FAILURE on failure.
  */
 int parse_file(FILE *file, stack_t **stack)
@@ -94,42 +94,3 @@ int parse_file(FILE *file, stack_t **stack)
  * @line: line
  * Return: -1 if failure, nread or remaining
  */
-
-/*ssize_t get_next_line(int fd, char **line)
-{
-	char buff[1024], *p = buff, c;
-	ssize_t remaining = 0, nread = 0;
-
-	*line = NULL;
-	while (1)
-	{
-		if (remaining <= 0)
-		{
-			remaining = read(fd, buff, 1024);
-			if (remaining <= 0)
-			{
-				if (*line)
-					return (nread);
-				return (remaining);
-			}
-			p = buff;
-		}
-		c = *p++;
-		remaining--;
-		if (c == '\n' || c == '\0')
-		{
-			if (c == '\n')
-				p--;
-			*line = _realloc(*line, sizeof(*line), nread + p - buff + 1);
-			strncat(*line, buff, p - buff);
-			nread += p - buff;
-			buff[0] = '\0';
-			return (nread);
-		}
-		*line = _realloc(*line, sizeof(*line), nread + 2);
-		(*line)[nread++] = c;
-		(*line)[nread] = '\0';
-	}
-	return (-1);
-}
-*/
