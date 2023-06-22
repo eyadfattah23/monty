@@ -9,7 +9,7 @@
  */
 int main(int argc, char *argv[])
 {
-	int file = open(argv[1], O_RDONLY);
+	FILE *file = fopen(argv[1], "r");
 	stack_t *stack = NULL;
 
 	if (argc != 2)
@@ -18,19 +18,20 @@ int main(int argc, char *argv[])
 		return (EXIT_FAILURE);
 	}
 
-	if (file == -1)
+	if (!file)
 	{
 		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
+		free_stack(stack);
 		return (EXIT_FAILURE);
 	}
 
 	if (parse_file(file, &stack) == EXIT_FAILURE)
 	{
-		close(file);
+		fclose(file);
 		free_stack(stack);
 		return (EXIT_FAILURE);
 	}
-	close(file);
+	fclose(file);
 	free_stack(stack);
 	return (EXIT_SUCCESS);
 }
@@ -41,9 +42,9 @@ int main(int argc, char *argv[])
  *
  * Return: A file descriptor to the opened file, or -1 on failure.
  */
-int open_file(char *filename)
+FILE *open_file(char *filename)
 {
-	return (open(filename, O_RDONLY));
+	return (fopen(filename, "r"));
 }
 /**
  * parse_file - Parses a file line by line and executes the relevant operation.
@@ -51,7 +52,7 @@ int open_file(char *filename)
  *
  * Return: EXIT_SUCCESS on success, EXIT_FAILURE on failure.
  */
-int parse_file(int file, stack_t **stack)
+int parse_file(FILE *file, stack_t **stack)
 {
 	char *line = NULL;
 	ssize_t nread;
@@ -60,8 +61,7 @@ int parse_file(int file, stack_t **stack)
 	instruction_t *instruction;
 	char *opcode = NULL;
 
-	nread = getline(&line, &len, file);
-	while (nread != -1)
+	while ((nread = getline(&line, &len, file)) != -1)
 	{
 		line_number++;
 		opcode = strtok(line, " \t\n");
@@ -93,7 +93,8 @@ int parse_file(int file, stack_t **stack)
  * @line: line
  * Return: -1 if failure, nread or remaining
  */
-ssize_t get_next_line(int fd, char **line)
+
+/*ssize_t get_next_line(int fd, char **line)
 {
 	char buff[1024], *p = buff, c;
 	ssize_t remaining = 0, nread = 0;
@@ -130,3 +131,4 @@ ssize_t get_next_line(int fd, char **line)
 	}
 	return (-1);
 }
+*/
