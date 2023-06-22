@@ -59,8 +59,7 @@ int parse_file(int file)
 	instruction_t *instruction;
 	char *opcode = NULL;
 
-	nread = get_next_line(file, &line);
-	while (nread > 0)
+	while ((nread = get_next_line(file, &line)) > 0)
 	{
 		line_number++;
 		opcode = strtok(line, " \t\n");
