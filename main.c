@@ -1,5 +1,25 @@
 #include "monty.h"
-
+/**
+ * _usage - prints usage message and exits
+ *
+ * Return: nothing
+ */
+void _usage(void)
+{
+	fprintf(stderr, "USAGE: monty file\n");
+	exit(EXIT_FAILURE);
+}
+/**
+ * _error - prints file error message and exits
+ * @argv: argv given by main
+ *
+ * Return: nothing
+ */
+void _error(char *argv)
+{
+	fprintf(stderr, "Error: Can't open file %s\n", argv);
+	exit(EXIT_FAILURE);
+}
 /**
  * main - Entry point for the Monty interpreter.
  * @argc: Number of command line arguments.
@@ -12,25 +32,12 @@ int main(int argc, char *argv[])
 	FILE *file;
 	stack_t *stack = NULL;
 
-	if (argc != 2 || access(argv[1], F_OK) != 0)
-	{
-		fprintf(stderr, "Usage: monty file\n");
-		return (EXIT_FAILURE);
-	}
+	if (argc != 2)
+		_usage();
+
 	file = fopen(argv[1], "r");
 	if (!file)
-	{
-		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
-		free_stack(stack);
-		return (EXIT_FAILURE);
-	}
-	fseek(file, 0, SEEK_END);
-	if(ftell(file) == 0)
-	{
-		fclose(file);
-		free_stack(stack);
-		return (EXIT_SUCCESS);
-	}
+		_error(argv[1]);
 
 	if (parse_file(file, &stack) == EXIT_FAILURE)
 	{
@@ -44,16 +51,6 @@ int main(int argc, char *argv[])
 }
 
 /**
- * open_file - Opens the file specified by filename.
- * @filename: The name of the file to open.
- *
- * Return: A file descriptor to the opened file, or -1 on failure.
- */
-FILE *open_file(char *filename)
-{
-	return (fopen(filename, "r"));
-}
-/**
  * parse_file - Parses a file line by line and executes the relevant operation.
  * @file: The file to parse.
  * @stack: The stack
@@ -62,19 +59,20 @@ FILE *open_file(char *filename)
 int parse_file(FILE *file, stack_t **stack)
 {
 	char *line = NULL;
-	ssize_t nread;
 	size_t len = 0;
-	unsigned int line_number = 0;
+	unsigned int line_number = 1;
 	instruction_t *instruction;
 	char *opcode = NULL;
 
-	while ((nread = getline(&line, &len, file)) != -1)
+	while (getline(&line, &len, file) != -1)
 	{
-		line_number++;
 		opcode = strtok(line, " \t\n");
 
 		if (!opcode || opcode[0] == '#')
+		{
+			line_number++;
 			continue;
+		}
 		instruction = get_instruction(opcode);
 
 		if (!instruction)
@@ -84,19 +82,9 @@ int parse_file(FILE *file, stack_t **stack)
 			return (EXIT_FAILURE);
 		}
 		instruction->f(stack, line_number);
+		line_number++;
 	}
-	if (nread == -1 && !opcode)
-	{
-		fprintf(stderr, "Error: Failed to read file\n");
-		free(line);
-		return (EXIT_FAILURE);
-	}
+	
 	free(line);
 	return (EXIT_SUCCESS);
 }
-/**
- * get_next_line - get the lines in a file
- * @fd: file descriptor
- * @line: line
- * Return: -1 if failure, nread or remaining
- */

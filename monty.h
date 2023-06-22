@@ -51,7 +51,6 @@ void pint(stack_t **stack, unsigned int line_number);
 void nop(stack_t **stack, unsigned int line_number);
 void free_stack(stack_t *stack);
 int parse_file(FILE *file, stack_t **stack);
-FILE *open_file(char *filename);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 int is_integer(char *input);
 instruction_t *get_instruction(char *opcode);
