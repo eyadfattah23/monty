@@ -49,7 +49,7 @@ void pint(stack_t **stack, unsigned int line_number);
  */
 void nop(stack_t **stack, unsigned int line_number);
 void free_stack(stack_t *stack);
-int parse_file(int file);
+int parse_file(int file, stack_t **stack);
 int open_file(char *filename);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 ssize_t get_next_line(int fd, char **line);

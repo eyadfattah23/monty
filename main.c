@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 		return (EXIT_FAILURE);
 	}
 
-	if (parse_file(file) == EXIT_FAILURE)
+	if (parse_file(file, &stack) == EXIT_FAILURE)
 	{
 		close(file);
 		free_stack(stack);
@@ -51,15 +51,17 @@ int open_file(char *filename)
  *
  * Return: EXIT_SUCCESS on success, EXIT_FAILURE on failure.
  */
-int parse_file(int file)
+int parse_file(int file, stack_t **stack)
 {
 	char *line = NULL;
 	ssize_t nread;
+	size_t len = 0;
 	unsigned int line_number = 0;
 	instruction_t *instruction;
 	char *opcode = NULL;
 
-	while ((nread = get_next_line(file, &line)) > 0)
+	nread = getline(&line, &len, file);
+	while (nread != -1)
 	{
 		line_number++;
 		opcode = strtok(line, " \t\n");
@@ -74,6 +76,7 @@ int parse_file(int file)
 			free(line);
 			return (EXIT_FAILURE);
 		}
+		instruction->f(stack, line_number);
 	}
 	if (nread == -1)
 	{
