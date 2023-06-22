@@ -9,7 +9,7 @@
  */
 int main(int argc, char *argv[])
 {
-	FILE *file = fopen(argv[1], "r");
+	FILE *file;
 	stack_t *stack = NULL;
 
 	if (argc != 2)
@@ -17,13 +17,14 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "Usage: monty file\n");
 		return (EXIT_FAILURE);
 	}
-
+	file = fopen(argv[1], "r");
 	if (!file)
 	{
 		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
 		free_stack(stack);
 		return (EXIT_FAILURE);
 	}
+
 
 	if (parse_file(file, &stack) == EXIT_FAILURE)
 	{

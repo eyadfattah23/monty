@@ -55,5 +55,5 @@ FILE *open_file(char *filename);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 int is_integer(char *input);
 instruction_t *get_instruction(char *opcode);
-
+int is_number(char *str);
 #endif
