@@ -21,14 +21,22 @@ instruction_t *get_instruction(char *opcode)
 	instruction_t *instructions = malloc(sizeof(instruction_t) * 8);
 	int i;
 
-	instructions[0] = (instruction_t){"push", push};
-	instructions[1] = (instruction_t){"pall", pall};
-	instructions[2] = (instruction_t){"pint", pint};
-	instructions[3] = (instruction_t){"pop", pop};
-	instructions[4] = (instruction_t){"swap", swap};
-	instructions[5] = (instruction_t){"add", add};
-	instructions[6] = (instruction_t){"nop", nop};
-	instructions[7] = (instruction_t){NULL, NULL};
+	instructions[0].opcode = "push";
+	instructions[0].f = push;
+	instructions[1].opcode = "pall";
+	instructions[1].f = pall;
+	instructions[2].opcode = "pint";
+	instructions[2].f = pint;
+	instructions[3].opcode = "pop";
+	instructions[3].f = pop;
+	instructions[4].opcode = "swap";
+	instructions[4].f = swap;
+	instructions[5].opcode = "add";
+	instructions[5].f = add;
+	instructions[6].opcode = "nop";
+	instructions[6].f = nop;
+	instructions[7].opcode = NULL;
+	instructions[7].f = NULL;
 	i = 0;
 	while (instructions[i].opcode)
 	{

@@ -57,7 +57,7 @@ int parse_file(int file)
 	char *line = NULL;
 	ssize_t nread;
 	unsigned int line_number = 0;
-	int instruction;
+	instruction_t *instruction;
 	char *opcode = NULL;
 
 	nread = get_next_line(file, &line);
