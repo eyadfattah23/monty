@@ -34,8 +34,8 @@ instruction_t *get_instruction(char *opcode)
 
 	while (instructions[i].opcode)
 	{
-		if (strcmp(instruction[i].opcode, opcode) == 0)
-			return (&instruction[i]);
+		if (strcmp(instructions[i].opcode, opcode) == 0)
+			return (&instructions[i]);
 		i++;
 	}
 
