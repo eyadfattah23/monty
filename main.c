@@ -43,12 +43,11 @@ int main(int argc, char *argv[])
  */
 int open_file(char *filename)
 {
-    return open(filename, O_RDONLY);
+	return (open(filename, O_RDONLY));
 }
 /**
  * parse_file - Parses a file line by line and executes the relevant operation.
  * @file: The file to parse.
- * @stack: A pointer to the stack.
  *
  * Return: EXIT_SUCCESS on success, EXIT_FAILURE on failure.
  */
@@ -86,7 +85,12 @@ int parse_file(int file)
 	free(line);
 	return (EXIT_SUCCESS);
 }
-
+/**
+ * get_next_line - get the lines in a file
+ * @fd: file descriptor
+ * @line: line
+ * Return: -1 if failure, nread or remaining
+ */
 ssize_t get_next_line(int fd, char **line)
 {
 	char buff[1024], *p = buff, c;
@@ -122,4 +126,5 @@ ssize_t get_next_line(int fd, char **line)
 		(*line)[nread++] = c;
 		(*line)[nread] = '\0';
 	}
+	return (-1);
 }

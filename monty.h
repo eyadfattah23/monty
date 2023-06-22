@@ -39,14 +39,14 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-
 void push(stack_t **stack, unsigned int line_number);
 void pall(stack_t **stack, unsigned int line_number);
 void pint(stack_t **stack, unsigned int line_number);
-/*void pop(stack_t **stack, unsigned int line_number);
-*void swap(stack_t **stack, unsigned int line_number);
-*void add(stack_t **stack, unsigned int line_number);
-*/
+/*
+ *void pop(stack_t **stack, unsigned int line_number);
+ *void swap(stack_t **stack, unsigned int line_number);
+ *void add(stack_t **stack, unsigned int line_number);
+ */
 void nop(stack_t **stack, unsigned int line_number);
 void free_stack(stack_t *stack);
 int parse_file(int file);
@@ -55,6 +55,5 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 ssize_t get_next_line(int fd, char **line);
 int is_integer(char *input);
 instruction_t *get_instruction(char *opcode);
-
 
 #endif
