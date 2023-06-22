@@ -9,21 +9,22 @@
  */
 int main(int argc, char *argv[])
 {
+	int file = open(argv[1], O_RDONLY);
+	stack_t *stack = NULL;
+
 	if (argc != 2)
 	{
 		fprintf(stderr, "Usage: monty file\n");
 		return (EXIT_FAILURE);
 	}
-	int file = open_file(argv[1]);
 
 	if (file == -1)
 	{
 		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
 		return (EXIT_FAILURE);
 	}
-	stack_t *stack = NULL;
 
-	if (parse_file(file, &stack) == EXIT_FAILURE)
+	if (parse_file(file) == EXIT_FAILURE)
 	{
 		close(file);
 		free_stack(stack);
@@ -51,21 +52,23 @@ int open_file(char *filename)
  *
  * Return: EXIT_SUCCESS on success, EXIT_FAILURE on failure.
  */
-int parse_file(int file, stack_t **stack)
+int parse_file(int file)
 {
 	char *line = NULL;
-	size_t len = 0;
 	ssize_t nread;
 	unsigned int line_number = 0;
+	int instruction;
+	char *opcode = NULL;
 
-	while ((nread = get_next_line(file, &line)) > 0)
+	nread = get_next_line(file, &line);
+	while (nread > 0)
 	{
 		line_number++;
-		char *opcode = strtok(line, " \t\n");
+		opcode = strtok(line, " \t\n");
 
 		if (!opcode || opcode[0] == '#')
 			continue;
-		instruction_t *instruction = get_instruction(opcode);
+		instruction = get_instruction(opcode, line_number);
 
 		if (!instruction)
 		{
@@ -73,7 +76,6 @@ int parse_file(int file, stack_t **stack)
 			free(line);
 			return (EXIT_FAILURE);
 		}
-		instruction->f(stack, line_number);
 	}
 	if (nread == -1)
 	{
@@ -83,4 +85,41 @@ int parse_file(int file, stack_t **stack)
 	}
 	free(line);
 	return (EXIT_SUCCESS);
+}
+
+ssize_t get_next_line(int fd, char **line)
+{
+	char buff[1024], *p = buff, c;
+	ssize_t remaining = 0, nread = 0;
+
+	*line = NULL;
+	while (1)
+	{
+		if (remaining <= 0)
+		{
+			remaining = read(fd, buff, 1024);
+			if (remaining <= 0)
+			{
+				if (*line)
+					return (nread);
+				return (remaining);
+			}
+			p = buff;
+		}
+		c = *p++;
+		remaining--;
+		if (c == '\n' || c == '\0')
+		{
+			if (c == '\n')
+				p--;
+			*line = _realloc(*line, sizeof(*line), nread + p - buff + 1);
+			strncat(*line, buff, p - buff);
+			nread += p - buff;
+			buff[0] = '\0';
+			return (nread);
+		}
+		*line = _realloc(*line, sizeof(*line), nread + 2);
+		(*line)[nread++] = c;
+		(*line)[nread] = '\0';
+	}
 }
