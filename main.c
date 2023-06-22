@@ -84,7 +84,6 @@ int parse_file(FILE *file, stack_t **stack)
 		instruction->f(stack, line_number);
 		line_number++;
 	}
-	
 	free(line);
 	return (EXIT_SUCCESS);
 }
