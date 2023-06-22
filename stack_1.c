@@ -1,5 +1,4 @@
 #include "monty.h"
-
 /**
  * nop - Does nothing.
  * @stack: Double pointer to the beginning of the stack.
@@ -17,29 +16,29 @@ void nop(stack_t **stack, unsigned int line_number)
  *
  * Return: Pointer to the instruction struct if found, NULL otherwise.
  */
-instruction_t *get_instruction(char *opcode)
+int get_instruction(char *opcode, unsigned int line_number, stack_t **stack)
 {
+	int i = 0;
 	instruction_t instructions[] = {
 		{"push", push},
 		{"pall", pall},
 		{"pint", pint},
 		{"pop", pop},
-		{"swap", swap},
-		{"add", add},
 		{"nop", nop},
 		{NULL, NULL}
 	};
 
-	int i = 0;
-
 	while (instructions[i].opcode)
 	{
 		if (strcmp(instructions[i].opcode, opcode) == 0)
-			return (&instructions[i]);
+		{
+			instructions[i].f(stack, line_number);
+			return (1);
+		}
 		i++;
 	}
 
-	return (NULL);
+	return (0);
 }
 
 /**
