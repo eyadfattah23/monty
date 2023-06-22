@@ -11,14 +11,14 @@ int main(int argc, char *argv[])
 {
 	if (argc != 2)
 	{
-		printf("Usage: monty file\n");
+		fprintf(stderr, "Usage: monty file\n");
 		return (EXIT_FAILURE);
 	}
 	int file = open_file(argv[1]);
 
 	if (file == -1)
 	{
-		printf("Error: Can't open file %s\n", argv[1]);
+		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
 		return (EXIT_FAILURE);
 	}
 	stack_t *stack = NULL;
@@ -69,7 +69,7 @@ int parse_file(int file, stack_t **stack)
 
 		if (!instruction)
 		{
-			printf("L%d: unknown instruction %s\n", line_number, opcode);
+			fprintf(stderr, "L%d: unknown instruction %s\n", line_number, opcode);
 			free(line);
 			return (EXIT_FAILURE);
 		}
@@ -77,7 +77,7 @@ int parse_file(int file, stack_t **stack)
 	}
 	if (nread == -1)
 	{
-		printf("Error: Failed to read file\n");
+		fprintf(stderr, "Error: Failed to read file\n");
 		free(line);
 		return (EXIT_FAILURE);
 	}
