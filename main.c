@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 	FILE *file;
 	stack_t *stack = NULL;
 
-	if (argc != 2)
+	if (argc != 2 || access(argv[1], F_OK) != 0)
 	{
 		fprintf(stderr, "Usage: monty file\n");
 		return (EXIT_FAILURE);
@@ -24,7 +24,13 @@ int main(int argc, char *argv[])
 		free_stack(stack);
 		return (EXIT_FAILURE);
 	}
-
+	fseek(file, 0, SEEK_END);
+	if(ftell(file) == 0)
+	{
+		fclose(file);
+		free_stack(stack);
+		return (EXIT_SUCCESS);
+	}
 
 	if (parse_file(file, &stack) == EXIT_FAILURE)
 	{
