@@ -52,7 +52,7 @@ void nop(stack_t **stack, unsigned int line_number);
 void free_stack(stack_t *stack);
 int parse_file(FILE *file, stack_t **stack);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
-int is_integer(char *input);
 instruction_t *get_instruction(char *opcode);
 int is_number(char *str);
+int is_digit(char *string);
 #endif

@@ -11,7 +11,7 @@ void push(stack_t **stack, unsigned int line_number)
 	int n;
 	stack_t *new_node;
 
-	if (!arg || !is_number(arg))
+	if (is_digit(arg) == 0)
 	{
 		fprintf(stderr, "L%u: usage: push integer\n", line_number);
 		exit(EXIT_FAILURE);

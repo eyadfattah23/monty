@@ -49,36 +49,32 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 	free(ptr);
 	return (new_ptr);
 }
-
 /**
- * is_integer - checks if a string represents an integer
- * @input: the string to check
+ * append_node - append a node to the start of a stack_t stack
+ * @stack: stack head
+ * @n: new node number
  *
- * Return: true if the string represents an integer, false otherwise
+ * Return: newly created node, if creation fails, the
+ * function will return NULL.
  */
-int is_integer(char *input)
+stack_t *append_node(stack_t **stack, const int n)
 {
-	long int num = 0;
-	int negative;
+	stack_t *new_node = malloc(sizeof(stack_t));
 
-	if (*input == '\0')
-		return (0);
-
-	negative = (*input == '-');
-	if (negative || *input == '+')
-		input++;
-
-	while (*input != '\0')
+	if (!new_node)
 	{
-		if (*input < '0' || *input > '9')
-			return (0);
-
-		num = num * 10 + (*input - '0');
-		input++;
+		fprintf(stderr, "Error: malloc failed\n");
+		free(new_node);
+		return (NULL);
 	}
+	new_node->n = n;
 
-	if (negative)
-		num *= -1;
+	new_node->next = *stack;
+	new_node->prev = NULL;
+	if (*stack)
+		(*stack)->prev = new_node;
 
-	return (1);
+	*stack = new_node;
+
+	return (new_node);
 }
