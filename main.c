@@ -14,9 +14,9 @@ int main(int argc, char *argv[])
 		printf("Usage: monty file\n");
 		return (EXIT_FAILURE);
 	}
-	FILE *file = open_file(argv[1]);
+	int file = open_file(argv[1]);
 
-	if (!file)
+	if (file == -1)
 	{
 		printf("Error: Can't open file %s\n", argv[1]);
 		return (EXIT_FAILURE);
@@ -25,11 +25,11 @@ int main(int argc, char *argv[])
 
 	if (parse_file(file, &stack) == EXIT_FAILURE)
 	{
-		fclose(file);
+		close(file);
 		free_stack(stack);
 		return (EXIT_FAILURE);
 	}
-	fclose(file);
+	close(file);
 	free_stack(stack);
 	return (EXIT_SUCCESS);
 }
@@ -38,13 +38,12 @@ int main(int argc, char *argv[])
  * open_file - Opens the file specified by filename.
  * @filename: The name of the file to open.
  *
- * Return: A FILE pointer to the opened file, or NULL on failure.
+ * Return: A file descriptor to the opened file, or -1 on failure.
  */
-FILE *open_file(char *filename)
+int open_file(char *filename)
 {
-	return (fopen(filename, "r"));
+    return open(filename, O_RDONLY);
 }
-
 /**
  * parse_file - Parses a file line by line and executes the relevant operation.
  * @file: The file to parse.
@@ -52,14 +51,14 @@ FILE *open_file(char *filename)
  *
  * Return: EXIT_SUCCESS on success, EXIT_FAILURE on failure.
  */
-int parse_file(FILE *file, stack_t **stack)
+int parse_file(int file, stack_t **stack)
 {
 	char *line = NULL;
 	size_t len = 0;
 	ssize_t nread;
 	unsigned int line_number = 0;
 
-	while ((nread = getline(&line, &len, file)) != -1)
+	while ((nread = get_next_line(file, &line)) > 0)
 	{
 		line_number++;
 		char *opcode = strtok(line, " \t\n");
@@ -75,6 +74,12 @@ int parse_file(FILE *file, stack_t **stack)
 			return (EXIT_FAILURE);
 		}
 		instruction->f(stack, line_number);
+	}
+	if (nread == -1)
+	{
+		printf("Error: Failed to read file\n");
+		free(line);
+		return (EXIT_FAILURE);
 	}
 	free(line);
 	return (EXIT_SUCCESS);

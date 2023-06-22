@@ -5,6 +5,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -45,7 +48,7 @@ void add(stack_t **stack, unsigned int line_number);
 void nop(stack_t **stack, unsigned int line_number);
 instruction_t *get_instruction(char *opcode);
 void free_stack(stack_t *stack);
-int parse_file(FILE *file, stack_t **stack);
-FILE *open_file(char *filename);
+int parse_file(int *file, stack_t **stack);
+int *open_file(char *filename);
 
 #endif
