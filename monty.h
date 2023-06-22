@@ -1,6 +1,7 @@
 #ifndef MONTY_H
 #define MONTY_H
 
+#define  _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -49,10 +50,9 @@ void pint(stack_t **stack, unsigned int line_number);
  */
 void nop(stack_t **stack, unsigned int line_number);
 void free_stack(stack_t *stack);
-int parse_file(int file, stack_t **stack);
-int open_file(char *filename);
+int parse_file(FILE *file, stack_t **stack);
+FILE *open_file(char *filename);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
-ssize_t get_next_line(int fd, char **line);
 int is_integer(char *input);
 instruction_t *get_instruction(char *opcode);
 
