@@ -53,3 +53,17 @@ void pall(stack_t **stack, unsigned int line_number)
 		current = current->next;
 	}
 }
+/**
+ * pint - Prints the value at the top of the stack, followed by a new line.
+ * @stack: Pointer to the beginning of the stack.
+ * @line_number: Line number of the instruction.
+ */
+void pint(stack_t **stack, unsigned int line_number)
+{
+	if (!stack || !*stack)
+	{
+		fprintf(stderr, "L%d: can't pint, stack empty\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+	printf("%d\n", (*stack)->n);
+}
