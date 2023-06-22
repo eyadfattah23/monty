@@ -68,7 +68,7 @@ int parse_file(int file)
 
 		if (!opcode || opcode[0] == '#')
 			continue;
-		instruction = get_instruction(opcode, line_number);
+		instruction = get_instruction(opcode);
 
 		if (!instruction)
 		{

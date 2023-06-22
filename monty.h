@@ -53,7 +53,7 @@ int open_file(char *filename);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 ssize_t get_next_line(int fd, char **line);
 int is_integer(char *input);
-int get_instruction(char *opcode, unsigned int line_number, stack_t **stack);
+instruction_t *get_instruction(char *opcode);
 
 
 #endif

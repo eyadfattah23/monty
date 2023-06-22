@@ -16,29 +16,29 @@ void nop(stack_t **stack, unsigned int line_number)
  *
  * Return: Pointer to the instruction struct if found, NULL otherwise.
  */
-int get_instruction(char *opcode, unsigned int line_number, stack_t **stack)
+instruction_t *get_instruction(char *opcode)
 {
-	int i = 0;
-	instruction_t instructions[] = {
-		{"push", push},
-		{"pall", pall},
-		{"pint", pint},
-		{"pop", pop},
-		{"nop", nop},
-		{NULL, NULL}
-	};
+	instruction_t *instructions = malloc(sizeof(instruction_t) * 8);
+	int i;
 
+	instructions[0] = (instruction_t){"push", push};
+	instructions[1] = (instruction_t){"pall", pall};
+	instructions[2] = (instruction_t){"pint", pint};
+	instructions[3] = (instruction_t){"pop", pop};
+	instructions[4] = (instruction_t){"swap", swap};
+	instructions[5] = (instruction_t){"add", add};
+	instructions[6] = (instruction_t){"nop", nop};
+	instructions[7] = (instruction_t){NULL, NULL};
+	i = 0;
 	while (instructions[i].opcode)
 	{
-		if (strcmp(instructions[i].opcode, opcode) == 0)
-		{
-			instructions[i].f(stack, line_number);
-			return (1);
-		}
+		if (strcmp(opcode, instructions[i].opcode) == 0)
+			return (&instructions[i]);
 		i++;
 	}
 
-	return (0);
+	free(instructions);
+	return (NULL);
 }
 
 /**
