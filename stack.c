@@ -9,14 +9,15 @@ void push(stack_t **stack, unsigned int line_number)
 {
 	char *arg = strtok(NULL, " \t\n");
 	int n;
+	stack_t *new_node;
 
-	if (!arg || !is_number(arg))
+	if (!arg || !is_integer(arg))
 	{
 		fprintf(stderr, "L%u: usage: push integer\n", line_number);
 		exit(EXIT_FAILURE);
 	}
 	n = atoi(arg);
-	stack_t *new_node = malloc(sizeof(stack_t));
+	new_node = malloc(sizeof(stack_t));
 
 	if (!new_node)
 	{
@@ -44,9 +45,9 @@ void push(stack_t **stack, unsigned int line_number)
  */
 void pall(stack_t **stack, unsigned int line_number)
 {
-	(void) line_number;
 	stack_t *current = *stack;
 
+	(void) line_number;
 	while (current)
 	{
 		printf("%d\n", current->n);
