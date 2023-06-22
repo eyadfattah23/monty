@@ -79,7 +79,7 @@ int parse_file(FILE *file, stack_t **stack)
 		}
 		instruction->f(stack, line_number);
 	}
-	if (nread == -1)
+	if (nread == -1 && !opcode)
 	{
 		fprintf(stderr, "Error: Failed to read file\n");
 		free(line);
