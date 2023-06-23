@@ -18,7 +18,8 @@ void nop(stack_t **stack, unsigned int line_number)
  */
 instruction_t *get_instruction(char *opcode)
 {
-	instruction_t *instructions = malloc(sizeof(instruction_t) * 8);
+	static instruction_t instructions[8];
+	instruction_t *ret;
 	int i;
 
 	instructions[0].opcode = "push";
@@ -41,11 +42,13 @@ instruction_t *get_instruction(char *opcode)
 	while (instructions[i].opcode)
 	{
 		if (strcmp(opcode, instructions[i].opcode) == 0)
-			return (&instructions[i]);
+		{
+			ret = &instructions[i];
+			return (ret);
+		}
 		i++;
 	}
 
-	free(instructions);
 	return (NULL);
 }
 
