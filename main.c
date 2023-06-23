@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 	FILE *file;
 	stack_t *stack = NULL;
 
-	if (argc != 2)
+	if (argc != 2 || access(argv[1], F_OK) != 0)
 		_usage();
 
 	file = fopen(argv[1], "r");
