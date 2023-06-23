@@ -79,6 +79,7 @@ int parse_file(FILE *file, stack_t **stack)
 		{
 			fprintf(stderr, "L%d: unknown instruction %s\n", line_number, opcode);
 			free(line);
+			free_stack(*stack);
 			return (EXIT_FAILURE);
 		}
 		instruction->f(stack, line_number);
