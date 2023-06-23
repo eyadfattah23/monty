@@ -31,8 +31,9 @@ int main(int argc, char *argv[])
 {
 	FILE *file;
 	stack_t *stack = NULL;
+	struct stat st;
 
-	if (argc != 2 || access(argv[1], F_OK) != 0)
+	if (argc != 2 || stat(argv[1], &st) != 0)
 		_usage();
 
 	file = fopen(argv[1], "r");
