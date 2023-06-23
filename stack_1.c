@@ -18,7 +18,7 @@ void nop(stack_t **stack, unsigned int line_number)
  */
 instruction_t *get_instruction(char *opcode)
 {
-	instruction_t *instructions = malloc(sizeof(instruction_t) * 5);
+	instruction_t *instructions = malloc(sizeof(instruction_t) * 6);
 	int i;
 
 	instructions[0].opcode = "push";
@@ -27,10 +27,12 @@ instruction_t *get_instruction(char *opcode)
 	instructions[1].f = pall;
 	instructions[2].opcode = "pint";
 	instructions[2].f = pint;
-	instructions[3].opcode = "nop";
-	instructions[3].f = nop;
-	instructions[4].opcode = NULL;
-	instructions[4].f = NULL;
+	instructions[3].opcode = "pop";
+	instructions[3].f = pop;
+	instructions[4].opcode = "nop";
+	instructions[4].f = nop;
+	instructions[5].opcode = NULL;
+	instructions[5].f = NULL;
 	i = 0;
 	while (instructions[i].opcode)
 	{
